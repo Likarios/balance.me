@@ -1,0 +1,40 @@
+html {
+	margin: 0;
+	padding: 0;
+	background: #222;
+	font-family: Cambria;
+	color: #fff;
+	overflow: hidden;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+	width: 100vw;
+}
+
+.button {
+	margin: 20px;
+	padding: 10px;
+	background: #888;
+	border: none;
+}
+
+.button:hover {
+	background: #BBB;
+}
+
+.button:active {
+	background: #EEE;
+}
+
+.character {
+	position: absolute;
+	margin: auto;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	-ms-touch-action: none;
+}
