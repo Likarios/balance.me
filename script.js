@@ -15,10 +15,17 @@ function startDrag(e) {
         var currentPos = getCoors(e);
         var deltaX = currentPos[0] - origin[0];
         var deltaY = currentPos[1] - origin[1];
-        console.log((pos[0] + deltaX))
-        console.log((pos[1] + deltaY))
-        this.style.left = (pos[0] + deltaX) + 'px';
-        this.style.top = (pos[1] + deltaY) + 'px';
+        var newLeft = pos[0] + deltaX;
+        var newRight = pos[1] + deltaY;
+        console.log("Nouvelle coordonnée : " + newLeft)
+        console.log("Taille écran : " + window.screen.width)
+        console.log("Taille image : " + this.width)
+        if (newLeft > 0 && newLeft < window.screen.width - this.width){
+            this.style.left = newLeft + 'px';
+        }
+        if (newRight > 0 && newRight < window.screen.height - this.height){
+            this.style.top = newRight + 'px';
+        }
         return false;
     }
 
