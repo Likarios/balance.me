@@ -1,6 +1,4 @@
 function startDrag(e) {
-    this.style.position = 'absolute';
-
     this.ontouchmove = this.onmspointermove = moveDrag;
 
     this.ontouchend = this.onmspointerup = function() {
@@ -17,11 +15,11 @@ function startDrag(e) {
         var deltaY = currentPos[1] - origin[1];
         var newLeft = pos[0] + deltaX;
         var newTop = pos[1] + deltaY;
-        if (newLeft > 0 && newLeft < containerRight - this.width) {
+        if (newLeft > 0 && newLeft < containerWidth - this.width) {
             this.style.left = newLeft + 'px';
         }
-        if (newTop > 0 && newTop < containerBottom - this.height) {
-            this.style.top = (newTop + containerTop) + 'px';
+        if (newTop > 0 && newTop < containerHeight - this.height) {
+            this.style.top = newTop + 'px';
         }
         return false;
     }
@@ -40,13 +38,13 @@ function startDrag(e) {
     }
 }
 
-var containerRight = window.screen.width - document.querySelector('.container').offsetLeft;
-var containerBottom = window.screen.height - document.querySelector('.container').offsetTop;
-var containerTop = document.querySelector('.container').offsetTop;
+var containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
+var containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
 
 var elements = document.querySelectorAll('.character');
 [].forEach.call(elements, function(element) {
     element.ontouchstart = element.onmspointerdown = startDrag;
+    element.style.position = 'absolute';
 });
 
 document.ongesturechange = function() {
