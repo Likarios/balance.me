@@ -59,6 +59,6 @@ body {
 }
 
 .character:hover, .character:active {
-	filter: brightness(120%);
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 	transition: filter 0.3s ease;
 }

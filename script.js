@@ -16,15 +16,12 @@ function startDrag(e) {
         var deltaX = currentPos[0] - origin[0];
         var deltaY = currentPos[1] - origin[1];
         var newLeft = pos[0] + deltaX;
-        var newRight = pos[1] + deltaY;
-        console.log("Nouvelle coordonnée : " + newLeft)
-        console.log("Taille écran : " + window.screen.width)
-        console.log("Taille image : " + this.width)
-        if (newLeft > 0 && newLeft < window.screen.width - this.width){
+        var newTop = pos[1] + deltaY;
+        if (newLeft > 0 && newLeft < containerRight - this.width) {
             this.style.left = newLeft + 'px';
         }
-        if (newRight > 0 && newRight < window.screen.height - this.height){
-            this.style.top = newRight + 'px';
+        if (newTop > 0 && newTop < containerBottom - this.height) {
+            this.style.top = (newTop + containerTop) + 'px';
         }
         return false;
     }
@@ -39,10 +36,13 @@ function startDrag(e) {
             coors[0] = e.clientX;
             coors[1] = e.clientY;
         }
-        
         return coors;
     }
 }
+
+var containerRight = window.screen.width - document.querySelector('.container').offsetLeft;
+var containerBottom = window.screen.height - document.querySelector('.container').offsetTop;
+var containerTop = document.querySelector('.container').offsetTop;
 
 var elements = document.querySelectorAll('.character');
 [].forEach.call(elements, function(element) {
