@@ -65,7 +65,6 @@ if ('DeviceOrientationEvent' in window) {
 
 function deviceOrientationHandler(eventData) {
     var tiltLR = eventData.gamma;
-    var tiltFB = eventData.beta;
     var logo = document.getElementsByClassName("character");
-    logo[0].style.transform = "rotate(" + tiltLR + "deg) rotate3d(1,0,0, " + (tiltFB * -1) + "deg)";
+    logo[0].style.transform = "rotate(" + tiltLR + "deg)";
 }
