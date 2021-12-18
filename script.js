@@ -1,3 +1,5 @@
+// Functions and variables for the image touch grabing
+
 function startDrag(e) {
     this.ontouchmove = this.onmspointermove = moveDrag;
 
@@ -51,11 +53,7 @@ document.ongesturechange = function() {
     return false;
 }
 
-
-
-
-
-
+// Functions and variables for the image tilting based on phone orientation
 
 if ('DeviceOrientationEvent' in window) {
     window.addEventListener('deviceorientation', deviceOrientationHandler, false);
@@ -69,9 +67,7 @@ function deviceOrientationHandler(eventData) {
     logo[0].style.transform = "rotate(" + tiltLR + "deg)";
 }
 
-
-
-
+// Functions and variables for the camera capture
 
 function getUserMedia(options, successCallback, failureCallback) {
     var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -99,13 +95,13 @@ function getStream() {
         if ('srcObject' in mediaControl) {
             mediaControl.srcObject = stream;
             mediaControl.style.display = "block";
-            mediaControl.style.heigt = "400px";
-        } else if (navigator.mozGetUserMedia) {
-            mediaControl.mozSrcObject = stream;
+            containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
+            containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
         } else {
             mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
             mediaControl.style.display = "block";
-            mediaControl.style.heigt = "400px";
+            containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
+            containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
         }
         theStream = stream;
     }, function(err) {
@@ -117,23 +113,26 @@ function takePhoto() {
     var mediaControl = document.querySelector('video');
         if ('srcObject' in mediaControl) {
             mediaControl.style.display = "none";
+            containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
+            containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
         }
 
     if (!('ImageCapture' in window)) {
-        alert('ImageCapture is not available');
+        alert("La capture d'image n'est pas disponible !");
         return;
     }
 
     if (!theStream) {
-        alert('Grab the video stream first!');
+        alert("Il faut d'abord lancer le stream vidéo !");
         return;
     }
     var theImageCapturer = new ImageCapture(theStream.getVideoTracks()[0]);
 
     theImageCapturer.takePhoto()
-        .then(blob => {
+        .then(megablob => {
             var theImageTag = document.getElementsByClassName("character")[0];
-            theImageTag.src = URL.createObjectURL(blob);
+            theImageTag.src = URL.createObjectURL(megablob);
+            theImageTag.style.height = "200px";
         })
         .catch(err => alert('Error: ' + err));
 }
