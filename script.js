@@ -100,6 +100,12 @@ function getStream() {
             mediaControl.srcObject = stream;
             mediaControl.style.display = "block";
             mediaControl.style.heigt = "400px";
+        } else if (navigator.mozGetUserMedia) {
+            mediaControl.mozSrcObject = stream;
+        } else {
+            mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+            mediaControl.style.display = "block";
+            mediaControl.style.heigt = "400px";
         }
         theStream = stream;
     }, function(err) {
