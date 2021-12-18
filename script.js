@@ -68,3 +68,66 @@ function deviceOrientationHandler(eventData) {
     var logo = document.getElementsByClassName("character");
     logo[0].style.transform = "rotate(" + tiltLR + "deg)";
 }
+
+
+
+
+
+function getUserMedia(options, successCallback, failureCallback) {
+    var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    if (api) {
+        return api.bind(navigator)(options, successCallback, failureCallback);
+    }
+}
+
+var theStream;
+
+function getStream() {
+    if (!navigator.getUserMedia && !navigator.webkitGetUserMedia &&
+        !navigator.mozGetUserMedia && !navigator.msGetUserMedia) {
+        alert('User Media API not supported.');
+        return;
+    }
+
+    var constraints = {
+        video: true
+    };
+
+    getUserMedia(constraints, function(stream) {
+        var mediaControl = document.querySelector('video');
+        if ('srcObject' in mediaControl) {
+            mediaControl.srcObject = stream;
+            mediaControl.style.display = "block";
+            mediaControl.style.heigt = "400px";
+        }
+        theStream = stream;
+    }, function(err) {
+        alert('Error: ' + err);
+    });
+}
+
+function takePhoto() {
+    var mediaControl = document.querySelector('video');
+        if ('srcObject' in mediaControl) {
+            mediaControl.style.display = "none";
+        }
+
+    if (!('ImageCapture' in window)) {
+        alert('ImageCapture is not available');
+        return;
+    }
+
+    if (!theStream) {
+        alert('Grab the video stream first!');
+        return;
+    }
+    var theImageCapturer = new ImageCapture(theStream.getVideoTracks()[0]);
+
+    theImageCapturer.takePhoto()
+        .then(blob => {
+            var theImageTag = document.getElementsByClassName("character")[0];
+            theImageTag.src = URL.createObjectURL(blob);
+        })
+        .catch(err => alert('Error: ' + err));
+}

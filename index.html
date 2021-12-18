@@ -7,10 +7,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	</head>
 	<body>
-		<button class="button" type="button">CHANGER DE VISAGE</button>
+		<div class="buttons">
+			<button onclick="getStream()">Grab video</button>
+			<button onclick="takePhoto()">Take Photo!</button>
+		</div>
+		<div class="video">
+			<video height=150 autoplay style="display: none;"></video>
+		</div>
 		<div class="container">
-			<div></div>
-			<img class="character" src="character.svg" alt="Personnage" height=400/>
+			<img class="character" src="character.svg" alt="Personnage" height=400 />
 		</div>
 	</body>
 </html>
