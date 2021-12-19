@@ -80,6 +80,8 @@ function startDrag(e) {
 // ##########################################################################################################
 
 function getHurt() {
+    var audio = new Audio("hurt.mp3");
+    audio.play();
     persistentNotification();
 }
 
@@ -88,6 +90,8 @@ function requestPermission() {
         alert('Notification API not supported!');
         return;
     }
+
+    Notification.requestPermission();
 }
 
 function persistentNotification() {
@@ -104,6 +108,8 @@ function persistentNotification() {
         alert('Notification API error: ' + err);
     }
 }
+
+requestPermission();
 
 // ##########################################################################################################
 // Functions and variables for the image tilting based on phone orientation
