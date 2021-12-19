@@ -1,5 +1,6 @@
 * {
 	box-sizing: border-box;
+	user-select: none;
 }
 
 img {
@@ -25,6 +26,26 @@ body {
 	height: 100%;
 }
 
+.desktop {
+	display: none;
+}
+
+.desktop > p {
+	color: #ffffff;
+	text-align: center;
+	margin: 0;
+	padding: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	animation: background 3s linear infinite;
+}
+
+@media (min-width: 500px) {
+	.desktop {
+		display: block;
+	}
+  }
+
 .buttons {
 	display: flex;
 	flex-direction: row;
@@ -38,6 +59,7 @@ body {
 	font-weight: bold;
 	background: #888;
 	border: none;
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 }
 
 .buttons > button:hover {
@@ -56,6 +78,7 @@ body {
 
 .video > video {
 	margin: 0 0 20px 0;
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 }
 
 .container {
@@ -72,12 +95,14 @@ body {
 }
 
 .character {
-	transition: filter 0.3s ease;
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+	border-radius: 20px;
 }
 
-.character:hover, .character:active {
-	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-	transition: filter 0.3s ease;
+@keyframes background {
+    0% { background: #800f00; }
+    50% { background: #806200; }
+	100% { background: #800f00; }
 }
 
 @keyframes shadow {
