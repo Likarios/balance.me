@@ -2,7 +2,22 @@
 // Functions and variables for the image touch grabing
 // ##########################################################################################################
 
+// Variables to get the container size
+var containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
+var containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
+
+// Select all elements with a certain class and make them draggable
+var elements = document.querySelectorAll('.character');
+[].forEach.call(elements, function(element) {
+    element.ontouchstart = element.onmspointerdown = startDrag;
+    element.style.position = 'absolute';
+});
+
+// Function called once when an element is being dragged.
+// It is not called again until the user drops the element and drag it again
 function startDrag(e) {
+    // If the element has collided with a border since it is being dragged
+    var hasBeenHurt = false;
     this.ontouchmove = this.onmspointermove = moveDrag;
 
     this.ontouchend = this.onmspointerup = function() {
@@ -13,7 +28,10 @@ function startDrag(e) {
     var pos = [this.offsetLeft, this.offsetTop];
     var origin = getCoors(e);
 
+    // Function called every frame to update the position of the element to the position of the user's finger
     function moveDrag(e) {
+        // If the element collides with at least one border
+        var hurt = false;
         var currentPos = getCoors(e);
         var deltaX = currentPos[0] - origin[0];
         var deltaY = currentPos[1] - origin[1];
@@ -21,13 +39,28 @@ function startDrag(e) {
         var newTop = pos[1] + deltaY;
         if (newLeft > 0 && newLeft < containerWidth - this.width) {
             this.style.left = newLeft + 'px';
+        } else {
+            hurt = true;
         }
         if (newTop > 0 && newTop < containerHeight - this.height) {
             this.style.top = newTop + 'px';
+        } else {
+            hurt = true;
+        }
+        if(!hurt) {
+            // The collision is reset if no border has been collided with the element this frame
+            hasBeenHurt = false;
+        }
+        // If the element has not collided since it is being dragged and if it is currently colliding
+        if(hurt && !hasBeenHurt) {
+            // Call to a notification
+            getHurt();
+            hasBeenHurt = true;
         }
         return false;
     }
 
+    // Get the coordinates on screen of one touchable element
     function getCoors(e) {
         var coors = [];
         if (e.targetTouches && e.targetTouches.length) {
@@ -42,17 +75,34 @@ function startDrag(e) {
     }
 }
 
-var containerWidth = window.screen.width - document.querySelector('.container').offsetLeft;
-var containerHeight = window.screen.height - document.querySelector('.container').offsetTop;
+// ##########################################################################################################
+// Functions and variables for the notification pushing when the character is hurt
+// ##########################################################################################################
 
-var elements = document.querySelectorAll('.character');
-[].forEach.call(elements, function(element) {
-    element.ontouchstart = element.onmspointerdown = startDrag;
-    element.style.position = 'absolute';
-});
+function getHurt() {
+    persistentNotification();
+}
 
-document.ongesturechange = function() {
-    return false;
+function requestPermission() {
+    if (!('Notification' in window)) {
+        alert('Notification API not supported!');
+        return;
+    }
+}
+
+function persistentNotification() {
+    if (!('Notification' in window) || !('ServiceWorkerRegistration' in window)) {
+        alert('Persistent Notification API not supported!');
+        return;
+    }
+
+    try {
+        navigator.serviceWorker.getRegistration()
+            .then((reg) => reg.showNotification("Aïe, tu me fais mal !"))
+            .catch((err) => alert('Service Worker registration error: ' + err));
+    } catch (err) {
+        alert('Notification API error: ' + err);
+    }
 }
 
 // ##########################################################################################################
